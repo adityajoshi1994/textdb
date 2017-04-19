@@ -3,7 +3,6 @@ import { Component , ViewChild} from '@angular/core';
 import { CurrentDataService } from './current-data-service';
 import { ModalComponent } from 'ng2-bs3-modal/ng2-bs3-modal';
 
-
 declare var jQuery: any;
 declare var Backbone : any;
 
@@ -21,7 +20,6 @@ export class SideBarComponent {
     operator = "Operator";
     submitted = false;
     operatorId: number;
-
 
     tempSubmitted = false;
 
@@ -108,7 +106,25 @@ export class SideBarComponent {
           this.currentDataService.setData(jQuery('#the-flowchart').flowchart('getData'));
     }
 
-    onUpload() {
-        
+
+    // refer to http://stackoverflow.com/questions/40214772/file-upload-in-angular-2
+
+    onUpload(event) {
+        let fileList: FileList = event.target.files;
+        if(fileList.length > 0) {
+            let file: File = fileList[0];
+            let formData:FormData = new FormData();
+            formData.append('uploadFile', file, file.name);
+            let headers = new Headers();
+            headers.append('Content-Type', 'multipart/form-data');
+            headers.append('Accept', 'application/json');
+            let options = new RequestOptions({ headers: headers });
+            this.http.post(`${this.apiEndPoint}`, formData, options)
+                .map(res => res.json())
+                .catch(error => Observable.throw(error))
+                .subscribe(
+                    data => console.log('success'),
+                    error => console.log(error))
+        }
     }
 }
