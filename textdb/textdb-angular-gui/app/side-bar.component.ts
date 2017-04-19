@@ -127,4 +127,8 @@ export class SideBarComponent {
                     error => console.log(error))
         }
     }
+
+    onAddDictionary() {
+        // TODO: Validate if the uploaded file is a valid dictionary
+    }
 }
