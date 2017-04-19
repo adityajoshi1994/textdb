@@ -107,4 +107,8 @@ export class SideBarComponent {
           jQuery("#the-flowchart").flowchart("deleteOperator", this.operatorId);
           this.currentDataService.setData(jQuery('#the-flowchart').flowchart('getData'));
     }
+
+    onUpload() {
+        
+    }
 }
