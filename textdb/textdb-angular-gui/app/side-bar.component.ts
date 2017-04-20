@@ -1,4 +1,5 @@
 import { Component , ViewChild} from '@angular/core';
+import { RequestOptions } from '@angular/http';
 
 import { CurrentDataService } from './current-data-service';
 import { ModalComponent } from 'ng2-bs3-modal/ng2-bs3-modal';
