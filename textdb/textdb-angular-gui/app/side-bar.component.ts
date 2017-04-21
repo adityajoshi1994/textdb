@@ -1,5 +1,5 @@
 import { Component , ViewChild} from '@angular/core';
-import { RequestOptions } from '@angular/http';
+import { FileUploader } from 'ng2-file-upload';
 
 import { CurrentDataService } from './current-data-service';
 import { ModalComponent } from 'ng2-bs3-modal/ng2-bs3-modal';
@@ -8,6 +8,9 @@ declare var jQuery: any;
 declare var Backbone : any;
 
 declare var PrettyJSON : any;
+
+// const URL = '/api/';
+const URL = 'localhost:3000/uploadDict';
 
 @Component({
     moduleId: module.id,
@@ -30,7 +33,11 @@ export class SideBarComponent {
     nlpEntityList : string[] = ["noun","verb","adjective","adverb","ne_all","number","location","person","organization","money","percent","date","time"];
     regexSplitList : string[] = ["left", "right", "standalone"];
     samplerList : string[] = ["random", "firstk"];
-
+/*
+    public uploader:FileUploader = new FileUploader({url: URL});
+    public hasBaseDropZoneOver:boolean = false;
+    public hasAnotherDropZoneOver:boolean = false;
+*/
     @ViewChild('MyModal')
     modal: ModalComponent;
     ModalOpen() {
@@ -106,15 +113,13 @@ export class SideBarComponent {
           jQuery("#the-flowchart").flowchart("deleteOperator", this.operatorId);
           this.currentDataService.setData(jQuery('#the-flowchart').flowchart('getData'));
     }
-
-
-    // refer to http://stackoverflow.com/questions/40214772/file-upload-in-angular-2
-
-    onUpload(event) {
-
+/*
+    public fileOverBase(e:any):void {
+        this.hasBaseDropZoneOver = e;
     }
 
-    onAddDictionary() {
-        // TODO: Validate if the uploaded file is a valid dictionary
+    public fileOverAnother(e:any):void {
+        this.hasAnotherDropZoneOver = e;
     }
+*/
 }

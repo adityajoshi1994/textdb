@@ -21,11 +21,12 @@
 
                 <input *ngIf="checkInSelector(attribute) === -1" [(ngModel)]="data.properties.attributes[attribute]" name="{{attribute}}" type="text" class="form-control" id="{{attribute}}" value="{{data.properties.attributes[attribute]}}" #{{attribute}}="ngModel" required>
             </div>
-            <h5 *ngIf="operator === 'DictionarySource'" >Upload A Local Dictionary:</h5>
-            <input *ngIf="operator === 'DictionarySource'" type="file" (change)="onUpload($event)" placeholder="Upload file" accept=".pdf,.doc,.docx,.txt">
-            <br>
-            <button *ngIf="operator === 'DictionarySource'" type="button" class="btn btn-default" (click) = "onAddDictionary()">Add Dictionary</button>
-            <br><br>
+
+            <div *ngIf="operator === 'DictionarySource'" >
+                <h5>Upload A Local Dictionary:</h5>
+                <!--<input type="file" ng2FileSelect [uploader]="uploader"/>-->
+            </div>
+
             <button type="submit" class="btn btn-success" [disabled]="!editOperatorForm.form.valid">Save</button>
             <button type="button" class="btn btn-default" (click) = "onDelete()">Delete</button>
         </form>
