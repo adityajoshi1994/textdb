@@ -13,7 +13,7 @@ import { SideBarComponent }   from './side-bar.component';
 
 import { BsDropdownModule } from 'ng2-bootstrap/';
 import { Ng2Bs3ModalModule } from 'ng2-bs3-modal/ng2-bs3-modal';
-import {FileSelectDirective} from "ng2-file-upload";
+import {FileSelectDirective} from "../thirdparty/ng2-file-upload";
 
 @NgModule({
   imports:      [ BsDropdownModule.forRoot(),

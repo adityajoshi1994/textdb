@@ -12,14 +12,12 @@ import edu.uci.ics.textdb.web.healthcheck.SampleHealthCheck;
 import edu.uci.ics.textdb.web.request.beans.KeywordSourceBean;
 import edu.uci.ics.textdb.web.request.beans.NlpExtractorBean;
 import edu.uci.ics.textdb.web.request.beans.TupleStreamSinkBean;
-import edu.uci.ics.textdb.web.resource.NewQueryPlanResource;
-import edu.uci.ics.textdb.web.resource.InitSystemResource;
-import edu.uci.ics.textdb.web.resource.PlanStoreResource;
-import edu.uci.ics.textdb.web.resource.QueryPlanResource;
+import edu.uci.ics.textdb.web.resource.*;
 import io.dropwizard.Application;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import org.eclipse.jetty.servlets.CrossOriginFilter;
+import org.glassfish.jersey.media.multipart.MultiPartFeature;
 
 import javax.servlet.DispatcherType;
 import javax.servlet.FilterRegistration;
@@ -66,6 +64,13 @@ public class TextdbWebApplication extends Application<TextdbWebConfiguration> {
         final InitSystemResource initSystemResource = new InitSystemResource();
         // Registers the InitSystemResource with Jersey
         environment.jersey().register(initSystemResource);
+
+        // Creates an instance of the FileUploadResource class to register with Jersey
+        final FileUploadResource fileUploadResource = new FileUploadResource();
+        // Registers the FileUploadResource with Jersey
+        environment.jersey().register(fileUploadResource);
+        // Registers the MultiPartFeature with Jersey to handle file upload
+        environment.jersey().register(MultiPartFeature.class);
 
         // Creates an instance of the HealthCheck and registers it with the environment
         final SampleHealthCheck sampleHealthCheck = new SampleHealthCheck();

@@ -1,8 +1,10 @@
 import { Component , ViewChild} from '@angular/core';
-import { FileUploader, FileDropDirective } from 'ng2-file-upload';
+import { FileUploader, FileDropDirective } from '../thirdparty/ng2-file-upload';
 
 import { CurrentDataService } from './current-data-service';
 import { ModalComponent } from 'ng2-bs3-modal/ng2-bs3-modal';
+import {FileItem} from "../thirdparty/ng2-file-upload/file-upload/file-item.class";
+import {ParsedResponseHeaders} from "../thirdparty/ng2-file-upload/file-upload/file-uploader.class";
 
 declare var jQuery: any;
 declare var Backbone : any;
@@ -31,8 +33,8 @@ export class SideBarComponent {
     regexSplitList : string[] = ["left", "right", "standalone"];
     samplerList : string[] = ["random", "firstk"];
 
-    hasBaseDropZoneOver: boolean = false;
-    private uploader: FileUploader = new FileUploader({});
+    private _URL: string = "http://localhost:8080/upload/dictionary";
+    private _uploader: FileUploader = new FileUploader({url: this._URL});
 
     @ViewChild('MyModal')
     modal: ModalComponent;
@@ -113,13 +115,24 @@ export class SideBarComponent {
     }
 
     initializeUploader() {
-        this.uploader.onAfterAddingFile = function (fileItem: any) {
-            //let fileName: string = fileItem.file.name;
-            // let fileExtension: string = fileName.substr(fileName.lastIndexOf(".") + 1, fileName.length - 1);
+        this._uploader.onAfterAddingFile = function (fileItem: any) {
+            let fileName: string = fileItem.file.name;
+            let fileExtension: string = fileName.substr(fileName.lastIndexOf(".") + 1, fileName.length - 1);
 
-            console.log(fileItem);
-            //fileItem.upload();
+            if (fileExtension !== "txt") {
+                alert("Dictionary is not in txt format!");
+                this.clearQueue();
+            }
         };
 
+        this._uploader.onCompleteItem = function (item: FileItem, response: string, status: number, headers: ParsedResponseHeaders) {
+            console.log(JSON.parse(response));
+            this.clearQueue();
+        }
+
+        this._uploader.onErrorItem = function (item: FileItem, response: string, status: number, headers: ParsedResponseHeaders) {
+            alert("Upload has failed (" + response + ")");
+            this.clearQueue();
+        }
     }
 }
