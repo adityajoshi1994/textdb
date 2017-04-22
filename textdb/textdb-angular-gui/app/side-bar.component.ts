@@ -1,5 +1,5 @@
 import { Component , ViewChild} from '@angular/core';
-import { FileUploader } from 'ng2-file-upload';
+import { FileUploader, FileDropDirective } from 'ng2-file-upload';
 
 import { CurrentDataService } from './current-data-service';
 import { ModalComponent } from 'ng2-bs3-modal/ng2-bs3-modal';
@@ -8,9 +8,6 @@ declare var jQuery: any;
 declare var Backbone : any;
 
 declare var PrettyJSON : any;
-
-// const URL = '/api/';
-const URL = 'localhost:3000/uploadDict';
 
 @Component({
     moduleId: module.id,
@@ -33,11 +30,10 @@ export class SideBarComponent {
     nlpEntityList : string[] = ["noun","verb","adjective","adverb","ne_all","number","location","person","organization","money","percent","date","time"];
     regexSplitList : string[] = ["left", "right", "standalone"];
     samplerList : string[] = ["random", "firstk"];
-/*
-    public uploader:FileUploader = new FileUploader({url: URL});
-    public hasBaseDropZoneOver:boolean = false;
-    public hasAnotherDropZoneOver:boolean = false;
-*/
+
+    hasBaseDropZoneOver: boolean = false;
+    private uploader: FileUploader = new FileUploader({});
+
     @ViewChild('MyModal')
     modal: ModalComponent;
     ModalOpen() {
@@ -89,6 +85,8 @@ export class SideBarComponent {
 
                 this.ModalOpen();
             });
+
+        this.initializeUploader();
     }
 
     humanize(name: string): string{
@@ -113,13 +111,15 @@ export class SideBarComponent {
           jQuery("#the-flowchart").flowchart("deleteOperator", this.operatorId);
           this.currentDataService.setData(jQuery('#the-flowchart').flowchart('getData'));
     }
-/*
-    public fileOverBase(e:any):void {
-        this.hasBaseDropZoneOver = e;
-    }
 
-    public fileOverAnother(e:any):void {
-        this.hasAnotherDropZoneOver = e;
+    initializeUploader() {
+        this.uploader.onAfterAddingFile = function (fileItem: any) {
+            //let fileName: string = fileItem.file.name;
+            // let fileExtension: string = fileName.substr(fileName.lastIndexOf(".") + 1, fileName.length - 1);
+
+            console.log(fileItem);
+            //fileItem.upload();
+        };
+
     }
-*/
 }
