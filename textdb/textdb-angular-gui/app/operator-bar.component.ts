@@ -139,4 +139,8 @@ export class OperatorBarComponent {
             }
         });
     }
+
+    uploadDictionary(): void {
+        console.log("Upload Button Clicked!");
+    }
 }

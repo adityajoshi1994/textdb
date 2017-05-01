@@ -464,6 +464,17 @@ let result = {
   }
 }
 
+let uploadDictionary = {
+    top : 20,
+    left : 20,
+    properties : {
+        title : 'UploadDictionary',
+        attributes : {
+            "operatorType": "UploadDictionary",
+        }
+    }
+}
+
 export const DEFAULT_DATA: Data[] = [
     {id: 1, jsonData: {}}
 ];
@@ -487,4 +498,5 @@ export const DEFAULT_MATCHERS: Data[] = [
     {id: 14, jsonData: characterDistanceJoin},
     {id: 15, jsonData: similarityJoin},
     {id: 16, jsonData: result},
+    {id: 17, jsonData: uploadDictionary},
 ];
