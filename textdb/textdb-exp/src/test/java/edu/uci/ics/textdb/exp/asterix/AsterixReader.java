@@ -28,10 +28,8 @@ public class AsterixReader {
 	}
 
 	public void initQuery(){
-		query = " USE TinySocial;"
-				+ " SELECT VALUE user"
-				+ " FROM GleambookUsers user"
-				+ " WHERE user.id = 8;";
+		query = "use twitter;"
+				+ "select * from ds_tweet limit 1;";
 	}
 	
 //"    USE TinySocial; "
