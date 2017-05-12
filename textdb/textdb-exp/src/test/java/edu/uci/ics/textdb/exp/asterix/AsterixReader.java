@@ -22,7 +22,24 @@ import org.apache.http.message.BasicNameValuePair;
 
 public class AsterixReader {
 	public static final String asterixDB_URL = "http://localhost:19002/query/service";
-	public static void run() throws ClientProtocolException, IOException {
+	private String query;
+	AsterixReader(){
+		initQuery();
+	}
+
+	public void initQuery(){
+		query = " USE TinySocial;"
+				+ " SELECT VALUE user"
+				+ " FROM GleambookUsers user"
+				+ " WHERE user.id = 8;";
+	}
+	
+//"    USE TinySocial; "
+//+ " SELECT user.name AS uname, msg.message AS message"
+//+ " FROM GleambookUsers user, GleambookMessages msg"
+//+ " WHERE msg.authorId = user.id;"
+	
+	public void run() throws ClientProtocolException, IOException {
 
 		HttpClient client = HttpClientBuilder.create().build();
 		HttpPost post = new HttpPost(asterixDB_URL);
@@ -31,7 +48,6 @@ public class AsterixReader {
 		post.setHeader("User-Agent", "Mozilla/5.0");
 
 		List<NameValuePair> urlParameters = new ArrayList<NameValuePair>();
-		String query = "show tables;";
 		urlParameters.add(new BasicNameValuePair("statement", query));
 		urlParameters.add(new BasicNameValuePair("pretty", "true"));
 		urlParameters.add(new BasicNameValuePair("client_context_id", "xyz"));
@@ -49,7 +65,7 @@ public class AsterixReader {
         JsonValue jsonResult = jsonObject.get("results");
         jsonReader.close();
 
-        System.out.println("JsonValue: "+jsonResult);
+        System.out.println("JsonValue: \n"+jsonResult);
         System.out.println("JsonObject: "+ jsonObject.toString());
 
 
