@@ -29,7 +29,7 @@ public class AsterixReader {
 
 	public void initQuery(){
 		query = "use twitter;"
-				+ "select * from ds_tweet limit 1;";
+				+ "select * from ds_tweet limit 2;";
 	}
 	
 //"    USE TinySocial; "
@@ -37,7 +37,7 @@ public class AsterixReader {
 //+ " FROM GleambookUsers user, GleambookMessages msg"
 //+ " WHERE msg.authorId = user.id;"
 	
-	public void run() throws ClientProtocolException, IOException {
+	public void run() throws Exception {
 
 		HttpClient client = HttpClientBuilder.create().build();
 		HttpPost post = new HttpPost(asterixDB_URL);
@@ -60,11 +60,14 @@ public class AsterixReader {
 		BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
 		JsonReader jsonReader = Json.createReader(rd);
         JsonObject jsonObject = jsonReader.readObject();
-        JsonValue jsonResult = jsonObject.get("results");
+        JsonValue jsonTweets = jsonObject.get("results");
         jsonReader.close();
+        
+//        TwitterSample indexWriter = new TwitterSample();
+        System.out.println("JsonValue: \n"+jsonTweets);
 
-        System.out.println("JsonValue: \n"+jsonResult);
-        System.out.println("JsonObject: "+ jsonObject.toString());
+        TwitterSample.writeTwitterIndex(jsonTweets.toString());
+        
 
 
     }

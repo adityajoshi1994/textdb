@@ -33,6 +33,7 @@ public class TwitterSample {
         
         int counter = 0;
         JsonNode jsonNode = new ObjectMapper().readTree(new File(twitterFilePath));
+        System.out.println(jsonNode.size());
         for (JsonNode tweet : jsonNode) {
             try {
                 Long id = tweet.get("id").asLong();
