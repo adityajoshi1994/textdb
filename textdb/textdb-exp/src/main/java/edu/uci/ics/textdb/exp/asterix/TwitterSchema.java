@@ -42,10 +42,13 @@ public class TwitterSchema {
     public static String CREATE_AT = "create_at";
     public static Attribute CREATE_AT_ATTRIBUTE = new Attribute(CREATE_AT, AttributeType.STRING);
     
+    public static String RAW_DATA = "raw_data";
+    public static Attribute RAW_DATA_ATTRIBUTE = new Attribute(RAW_DATA, AttributeType.STRING);
+    
     public static Schema TWITTER_SCHEMA = new Schema(
             TEXT_ATTRIBUTE, TWEET_LINK_ATTRIBUTE, USER_LINK_ATTRIBUTE, 
             USER_SCREEN_NAME_ATTRIBUTE, USER_NAME_ATTRIBUTE, USER_DESCRIPTION_ATTRIBUTE, 
             USER_FOLLOWERS_COUNT_ATTRIBUTE, USER_FRIENDS_COUNT_ATTRIBUTE, 
-            STATE_ATTRIBUTE, COUNTY_ATTRIBUTE, CITY_ATTRIBUTE, CREATE_AT_ATTRIBUTE);
+            STATE_ATTRIBUTE, COUNTY_ATTRIBUTE, CITY_ATTRIBUTE, CREATE_AT_ATTRIBUTE, RAW_DATA_ATTRIBUTE);
 
 }

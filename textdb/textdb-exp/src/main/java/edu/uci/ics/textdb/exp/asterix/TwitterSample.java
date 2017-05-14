@@ -1,6 +1,8 @@
 package edu.uci.ics.textdb.exp.asterix;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -23,16 +25,8 @@ public class TwitterSample {
 //        writeTwitterIndex();
 //    }
     
-    public static void writeTwitterIndex(String jsonTweets) throws Exception {
-        RelationManager relationManager = RelationManager.getRelationManager();
-        relationManager.deleteTable(twitterClimateTable);
-        relationManager.createTable(twitterClimateTable, "../index/twitter/", TwitterSchema.TWITTER_SCHEMA, 
-                LuceneAnalyzerConstants.standardAnalyzerString());
-        
-        DataWriter dataWriter = relationManager.getTableDataWriter(twitterClimateTable);
-        dataWriter.open();
-        
-        int counter = 0;
+    public static List<Tuple> getTweetTupleList(String jsonTweets) throws Exception{
+    	ArrayList<Tuple> tupleList = new ArrayList<Tuple>();
         JsonNode jsonNode = new ObjectMapper().readTree(jsonTweets);
         for(JsonNode dsTweetNode : jsonNode){
 	        for (JsonNode tweet : dsTweetNode) {
@@ -52,6 +46,7 @@ public class TwitterSample {
 	                String county = geoTagNode.get("countyName").asText();
 	                String city = geoTagNode.get("cityName").asText();
 	                String createAt = tweet.get("create_at").asText();
+	                String rawData = tweet.toString();
 	                Tuple tuple = new Tuple(TwitterSchema.TWITTER_SCHEMA,
 	                        new TextField(text),
 	                        new StringField(tweetLink),
@@ -64,20 +59,36 @@ public class TwitterSample {
 	                        new TextField(state),
 	                        new TextField(county),
 	                        new TextField(city),
-	                        new StringField(createAt));
-	                dataWriter.insertTuple(tuple);
-	                System.out.println(tuple.toString());
-	                counter++;
+	                        new StringField(createAt),
+	                        new StringField(rawData));
+	                tupleList.add(tuple);
 	            } catch (RuntimeException e) {
 	                e.printStackTrace();
 	                continue;
 	            }
 	        }
         }
+    	return tupleList;
+    }
+    
+    // Assuming input always have the correct schema
+    public static void writeTwitterIndex(List<Tuple> tupleList) throws Exception {
+    	if(tupleList == null || tupleList.size() == 0)
+    		return;
+        RelationManager relationManager = RelationManager.getRelationManager();
+        relationManager.deleteTable(twitterClimateTable);
+        relationManager.createTable(twitterClimateTable, "../index/twitter/", TwitterSchema.TWITTER_SCHEMA, 
+                LuceneAnalyzerConstants.standardAnalyzerString());
         
+        DataWriter dataWriter = relationManager.getTableDataWriter(twitterClimateTable);
+        dataWriter.open();
+        
+        for(Tuple tuple : tupleList){
+        	dataWriter.insertTuple(tuple);
+        }
         dataWriter.close();
         System.out.println("write twitter data finished");
-        System.out.println(counter + " tweets written");
+        System.out.println(tupleList.size() + " tweets written");
     }
 
 }
