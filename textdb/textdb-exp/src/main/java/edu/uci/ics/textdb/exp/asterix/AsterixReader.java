@@ -126,6 +126,7 @@ public class AsterixReader implements ISink {
         jsonReader.close();
         try {
 			tweetsTupleList = TwitterSample.getTweetTupleList(jsonTweets.toString());
+			System.out.println(jsonTweets.toString());
 		} catch (Exception e) {
 			throw new TextDBException(e.getMessage());
 		}		
