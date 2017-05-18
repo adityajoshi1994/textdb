@@ -11,6 +11,7 @@ import javax.json.Json;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
 import javax.json.JsonValue;
+import javax.naming.spi.DirStateFactory.Result;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -35,6 +36,7 @@ public class AsterixReader implements ISink {
 	private Integer limit;	// number of lines that will be returned by the query
 	private List<Tuple> tweetsTupleList;
 	private int curser = CLOSED;
+	private String stringResults;
 	
 	AsterixReader(AsterixReaderPredicate predicate){
 		this.predicate = predicate;
@@ -83,9 +85,6 @@ public class AsterixReader implements ISink {
 		HttpClient client = HttpClientBuilder.create().build();
 		HttpPost post = new HttpPost(asterixDB_URL);
 
-		// add header
-//		post.setHeader("User-Agent", "Moz illa/5.0");
-		
 		// set post parameters
 		List<NameValuePair> urlParameters = new ArrayList<NameValuePair>();
 		urlParameters.add(new BasicNameValuePair("statement", query));
@@ -125,8 +124,8 @@ public class AsterixReader implements ISink {
         JsonValue jsonTweets = jsonObject.get("results");
         jsonReader.close();
         try {
-			tweetsTupleList = TwitterSample.getTweetTupleList(jsonTweets.toString());
-			System.out.println(jsonTweets.toString());
+        	stringResults = jsonTweets.toString();
+			tweetsTupleList = TwitterSample.getTweetTupleList(stringResults);
 		} catch (Exception e) {
 			throw new TextDBException(e.getMessage());
 		}		
@@ -146,4 +145,7 @@ public class AsterixReader implements ISink {
 		}
 	}
 	
+	public String getResults(){
+		return stringResults;
+	}
 }

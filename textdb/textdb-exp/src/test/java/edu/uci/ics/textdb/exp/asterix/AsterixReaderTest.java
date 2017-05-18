@@ -15,7 +15,7 @@ public class AsterixReaderTest {
 	
 	@Test
 	public void writeTweets(){
-		int limit = 5;
+		int limit = 1;
 		asterixReader.open();
 		asterixReader.setLimit(limit);
 		asterixReader.processTuples();
